@@ -3,6 +3,7 @@ import Login from "../../components/Login";
 import { UserContext } from "../../Context/Context";
 import { useNavigate } from 'react-router-dom';
 
+
 const LoginPage = ({isRegister, setIsRegister}) => {
   const {login} = useContext(UserContext);
   
@@ -118,7 +119,7 @@ const LoginPage = ({isRegister, setIsRegister}) => {
   };
 
   return (
-    <Login
+      <Login
       isRegister={isRegister}
       setIsRegister={setIsRegister}
       handleChange={handleChange}
@@ -126,6 +127,8 @@ const LoginPage = ({isRegister, setIsRegister}) => {
       formData={formData}
       setFormData={setFormData}
     />
+    
+    
   );
 };
 

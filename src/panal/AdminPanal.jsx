@@ -10,10 +10,9 @@ import { UserContext } from "../Context/Context";
 import CreateRFP from "../components/CreateRfp";
 
 const AdminPanal = () => {
-  const { logout, user } = useContext(UserContext);
+  const { logout, user, category } = useContext(UserContext);
   const [activeView, setActiveView] = useState("dashboard");
-
-  const [allCategory, setAllCategory] = useState([]);
+  // const [allCategory, setAllCategory] = useState([]);
   const [vendors, setVendors] = useState([]);
   const [rfpData, setRfpData] = useState([]);
   const [quote, setQuotes] = useState([]);
@@ -29,16 +28,16 @@ const AdminPanal = () => {
     const fetchData = async () => {
       try {
         // Fetch categories
-        const categoriesResponse = await fetch("https://rfpdemo.velsof.com/api/categories");
-        const categoriesResult = await categoriesResponse.json();
-        if (categoriesResult.response === "success" && categoriesResult.categories) {
+        // const categoriesResponse = await fetch("https://rfpdemo.velsof.com/api/categories");
+        // const categoriesResult = await categoriesResponse.json();
+        // if (categoriesResult.response === "success" && categoriesResult.categories) {
           
-          const categoriesArray = Object.values(categoriesResult.categories);
-          setAllCategory(categoriesArray);
-        }
-        else{
-          console.log(categoriesResult.error);
-        }
+        //   const categoriesArray = Object.values(categoriesResult.categories);
+        //   setAllCategory(categoriesArray);
+        // }
+        // else{
+        //   console.log(categoriesResult.error);
+        // }
 
         // Fetch RFP data
         const rfpResponse = await fetch(`https://rfpdemo.velsof.com/api/rfp/getrfp/${user.user_id}`, {
@@ -174,12 +173,12 @@ const AdminPanal = () => {
               <CreateRFP
                 vendors={vendors}
                 setAddRfp={setAddRfp}
-                categories={allCategory.length > 0 ? allCategory : ["Electronics", "Office Supplies", "Furniture"]}
+                categories={category.length > 0 ? category : ["Electronics", "Office Supplies", "Furniture"]}
               />
             ) : activeView === "dashboard" ? (
               <Dashboard />
             ) : activeView === "category" ? (
-              <Category allCategory={allCategory} />
+              <Category/>
             ) : activeView === "rfp" ? (
               <Rfp rfpData={rfpData} handleRfp={handleRfp} />
             ) : activeView === "vendors" ? (

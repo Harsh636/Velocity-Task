@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../Context/Context';
 
-const VendorRegister = ({setIsRegister}) => {
+const VendorRegister = ({ setIsRegister }) => {
+  const { category } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const ALL_CATEGORIES = ["1", "2", "3", "4"];
-  
+  // Dynamically generate category IDs from context
+  const ALL_CATEGORIES = category.map(cat => String(cat.id));
+
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -22,13 +25,9 @@ const VendorRegister = ({setIsRegister}) => {
 
   const handleChange = (e) => {
     const { id, value, type, selectedOptions } = e.target;
-    
 
-    // Handle the multi-select and select-all logic
     if (type === 'select-multiple' && id === 'categories') {
-      const values = Array.from(selectedOptions, (option) => option.value);
-      
-      // If "All Categories" is selected, select all
+      const values = Array.from(selectedOptions, option => option.value);
       if (values.includes("all")) {
         setFormData({ ...formData, categories: ALL_CATEGORIES });
       } else {
@@ -41,12 +40,12 @@ const VendorRegister = ({setIsRegister}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (formData.categories.length === 0) {
       alert('Please select at least one valid category.');
       return;
     }
-    
+
     const payload = {
       firstname: formData.firstname,
       lastname: formData.lastname,
@@ -59,7 +58,7 @@ const VendorRegister = ({setIsRegister}) => {
       gst_no: formData.gstno,
       mobile: formData.phoneno,
     };
-    console.log(payload);
+
     try {
       const response = await fetch('https://rfpdemo.velsof.com/api/registervendor', {
         method: 'POST',
@@ -74,15 +73,11 @@ const VendorRegister = ({setIsRegister}) => {
       if (response.ok) {
         setIsRegister(false);
         navigate("/login");
-        console.log(data);
-        if(data?.response==="success"){
-          console.log('Vendor registered successfully!');
-
-          console.log(data);
-        }else{
+        if (data?.response === "success") {
+          console.log('Vendor registered successfully!', data);
+        } else {
           console.log(data.error);
         }
-        
       } else {
         alert(`Registration failed: ${data.message || 'Unknown error'}`);
       }
@@ -255,10 +250,11 @@ const VendorRegister = ({setIsRegister}) => {
                             onChange={handleChange}
                           >
                             <option value="all">All Categories</option>
-                            <option value="1">Software</option>
-                            <option value="2">Hardware</option>
-                            <option value="3">Office Furniture</option>
-                            <option value="4">Stationery</option>
+                            {category.map((cat) => (
+                              <option key={cat.id} value={String(cat.id)}>
+                                {cat.name}
+                              </option>
+                            ))}
                           </select>
                         </div>
                       </div>
@@ -271,12 +267,12 @@ const VendorRegister = ({setIsRegister}) => {
                     </div>
 
                     <div className="mt-4 text-center">
-                      <a onClick={() => {setIsRegister(false);navigate("/login")}} href="#" className="text-muted">
+                      <a onClick={() => { setIsRegister(false); navigate("/login"); }} href="#" className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> Back to Login
                       </a>
                     </div>
                     <div className="mt-4 text-center">
-                      <a onClick={() => {navigate("/admin");}} href="#" className="text-muted">
+                      <a onClick={() => { navigate("/admin"); }} href="#" className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> Register as Admin
                       </a>
                     </div>

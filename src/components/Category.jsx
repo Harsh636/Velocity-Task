@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../Context/Context";
 
-const Category = ({ allCategory }) => {
+const Category = () => {
+  const {category} = useContext(UserContext);
+  const allCategory = category
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
