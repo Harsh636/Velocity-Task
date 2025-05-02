@@ -70,7 +70,7 @@ const ForgetPassword = () => {
   return (
     <div className="account-pages my-5 pt-sm-5">
       <div className="home-btn d-none d-sm-block">
-        <a href="" className="text-dark">
+        <a href="/" className="text-dark">
           <i className="fas fa-home h2"></i>
         </a>
       </div>
@@ -165,12 +165,12 @@ const ForgetPassword = () => {
                     </div>
 
                     <div className="mt-4 text-center">
-                      <a onClick={() => navigate("/vendor-registration")}  className="text-muted">
+                      <a onClick={() => navigate("/vendor-registration")} href="#" className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> Register as Vendor
                       </a>
                     </div>
                     <div className="mt-4 text-center">
-                      <a onClick={() => navigate("/login")}  className="text-muted">
+                      <a onClick={() => navigate("/login")} href="#" className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> Back to Login
                       </a>
                     </div>

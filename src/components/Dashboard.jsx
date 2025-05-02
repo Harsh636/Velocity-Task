@@ -10,7 +10,7 @@ const Dashboard = () => {
             <div className="page-title-right">
               <ol className="breadcrumb m-0">
                 <li className="breadcrumb-item">
-                  <a >Home</a>
+                  <a href="#">Home</a>
                 </li>
               </ol>
             </div>

@@ -8,7 +8,7 @@ const Footer = () => {
               <div className="col-sm-6">{new Date().getFullYear()} &copy; Copyright.</div>
               <div className="col-sm-6 text-sm-right">
                 Support Email:{" "}
-                <a  className="text-muted">
+                <a href="#" className="text-muted">
                   support@velsof.com
                 </a>
               </div>

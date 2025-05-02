@@ -11,7 +11,7 @@ const UserManagement = () => {
             <div className="page-title-right">
               <ol className="breadcrumb m-0">
                 <li className="breadcrumb-item">
-                  <a href="">Home</a>
+                  <a href="#">Home</a>
                 </li>
                 <li className="breadcrumb-item active">Users</li>
               </ol>
@@ -138,10 +138,10 @@ const UserManagement = () => {
                           </span>
                         </td>
                         <td>
-                          <a href="" className="text-primary mr-2">
+                          <a href="#" className="text-primary mr-2">
                             <i className="mdi mdi-pencil"></i>
                           </a>
-                          <a href="" className="text-danger">
+                          <a href="#" className="text-danger">
                             <i className="mdi mdi-circle-off-outline"></i>
                           </a>
                         </td>
@@ -173,7 +173,7 @@ const UserManagement = () => {
                         id="datatable_previous"
                       >
                         <a
-                          href=""
+                          href="#"
                           aria-controls="datatable"
                           data-dt-idx="0"
                           tabIndex="0"
@@ -184,7 +184,7 @@ const UserManagement = () => {
                       </li>
                       <li className="paginate_button page-item active">
                         <a
-                          href=""
+                          href="#"
                           aria-controls="datatable"
                           data-dt-idx="1"
                           tabIndex="0"
@@ -198,7 +198,7 @@ const UserManagement = () => {
                         id="datatable_next"
                       >
                         <a
-                          href=""
+                          href="#"
                           aria-controls="datatable"
                           data-dt-idx="2"
                           tabIndex="0"

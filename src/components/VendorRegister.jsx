@@ -267,12 +267,12 @@ const VendorRegister = ({ setIsRegister }) => {
                     </div>
 
                     <div className="mt-4 text-center">
-                      <a onClick={() => { setIsRegister(false); navigate("/login"); }} href="" className="text-muted">
+                      <a onClick={() => { setIsRegister(false); navigate("/login"); }} href="#" className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> Back to Login
                       </a>
                     </div>
                     <div className="mt-4 text-center">
-                      <a onClick={() => { navigate("/admin"); }} href="" className="text-muted">
+                      <a onClick={() => { navigate("/admin"); }} href="#" className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> Register as Admin
                       </a>
                     </div>

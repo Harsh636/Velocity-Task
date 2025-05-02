@@ -22,7 +22,7 @@ const Login = ({
   return (
     <div className="account-pages my-5 pt-sm-5">
       <div className="home-btn d-none d-sm-block">
-        <a href="" className="text-dark">
+        <a href="/" className="text-dark">
           <i className="fas fa-home h2"></i>
         </a>
       </div>
@@ -145,7 +145,7 @@ const Login = ({
                     <div className="mt-4 text-center">
                       <a
                       
-                        href=""
+                        href="#"
                         onClick={(e) => {
                           e.preventDefault();
                           handleRegister();
@@ -167,7 +167,7 @@ const Login = ({
                     </div>
                     {isRegister && (
                       <div className="mt-4 text-center">
-                      <a onClick={()=>navigate("/vendor-registration")} href="" className="text-muted">
+                      <a onClick={()=>navigate("/vendor-registration")} href="#" className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> Register as
                         Vendor
                       </a>
@@ -177,7 +177,7 @@ const Login = ({
                     
                     {!isRegister && (
                       <div className="mt-4 text-center">
-                        <a onClick={handleForgetPassword} href="" className="text-muted">
+                        <a onClick={handleForgetPassword} href="#" className="text-muted">
                           <i className="mdi mdi-lock mr-1"></i> Forgot your
                           password?
                         </a>
