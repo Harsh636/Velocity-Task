@@ -41,7 +41,7 @@ const VendorList = ({ vendors }) => {
             <div className="page-title-right">
               <ol className="breadcrumb m-0">
                 <li className="breadcrumb-item">
-                  <a href="#">Home</a>
+                  <a href="">Home</a>
                 </li>
                 <li className="breadcrumb-item active">Vendors</li>
               </ol>

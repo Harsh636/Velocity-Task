@@ -20,7 +20,7 @@ const RfpQuotes = ({ quotes }) => {
             <div className="page-title-right">
               <ol className="breadcrumb m-0">
                 <li className="breadcrumb-item">
-                  <a href="javascript: void(0);">Home</a>
+                  <a href="">Home</a>
                 </li>
                 <li className="breadcrumb-item active">RFP Quotes</li>
               </ol>
@@ -104,7 +104,7 @@ const RfpQuotes = ({ quotes }) => {
                         id="datatable_previous"
                       >
                         <a
-                          href="#"
+                          href=""
                           aria-controls="datatable"
                           data-dt-idx="0"
                           tabIndex="0"
@@ -115,7 +115,7 @@ const RfpQuotes = ({ quotes }) => {
                       </li>
                       <li className="paginate_button page-item active">
                         <a
-                          href="#"
+                          href=""
                           aria-controls="datatable"
                           data-dt-idx="1"
                           tabIndex="0"
@@ -129,7 +129,7 @@ const RfpQuotes = ({ quotes }) => {
                         id="datatable_next"
                       >
                         <a
-                          href="#"
+                          href=""
                           aria-controls="datatable"
                           data-dt-idx="2"
                           tabIndex="0"
