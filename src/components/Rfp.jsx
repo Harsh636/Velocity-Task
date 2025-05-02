@@ -30,7 +30,7 @@ const Rfp = ({ rfpData,  handleRfp }) => {
             <div className="page-title-right">
               <ol className="breadcrumb m-0">
                 <li className="breadcrumb-item">
-                  <a href="#">Home</a>
+                  <a href="">Home</a>
                 </li>
                 <li className="breadcrumb-item active">RFP List</li>
               </ol>
@@ -51,7 +51,7 @@ const Rfp = ({ rfpData,  handleRfp }) => {
                   </div>
                   <div className="col-lg-9 text-right">
                     <div className="headerButtons">
-                      <a onClick={handleRfp} href="#" className="btn btn-sm btn-success ">
+                      <a onClick={handleRfp} href="" className="btn btn-sm btn-success ">
                         <i className="mdi mdi-plus"></i> Add RFP
                       </a>
                     </div>
@@ -100,7 +100,7 @@ const Rfp = ({ rfpData,  handleRfp }) => {
                           {rfp.rfp_status !== "closed" ? (
                             <td>
                               <a
-                                href="#"
+                                href=""
                                 title="Close RFP"
                                 className="text-danger"
                               >

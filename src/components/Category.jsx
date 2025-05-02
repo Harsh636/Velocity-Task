@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState,useContext } from "react";
 import { UserContext } from "../Context/Context";
 
 const Category = () => {
@@ -34,7 +34,7 @@ const Category = () => {
             <div className="page-title-right">
               <ol className="breadcrumb m-0">
                 <li className="breadcrumb-item">
-                  <a href="#">Home</a>
+                  <a >Home</a>
                 </li>
                 <li className="breadcrumb-item active">Categories</li>
               </ol>

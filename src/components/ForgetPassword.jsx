@@ -165,12 +165,12 @@ const ForgetPassword = () => {
                     </div>
 
                     <div className="mt-4 text-center">
-                      <a onClick={() => navigate("/vendor-registration")} href="#" className="text-muted">
+                      <a onClick={() => navigate("/vendor-registration")}  className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> Register as Vendor
                       </a>
                     </div>
                     <div className="mt-4 text-center">
-                      <a onClick={() => navigate("/login")} href="#" className="text-muted">
+                      <a onClick={() => navigate("/login")}  className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> Back to Login
                       </a>
                     </div>

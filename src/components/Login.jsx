@@ -145,7 +145,7 @@ const Login = ({
                     <div className="mt-4 text-center">
                       <a
                       
-                        href="#toggle"
+                        href=""
                         onClick={(e) => {
                           e.preventDefault();
                           handleRegister();
@@ -167,7 +167,7 @@ const Login = ({
                     </div>
                     {isRegister && (
                       <div className="mt-4 text-center">
-                      <a onClick={()=>navigate("/vendor-registration")} href="#" className="text-muted">
+                      <a onClick={()=>navigate("/vendor-registration")} href="" className="text-muted">
                         <i className="mdi mdi-lock mr-1"></i> Register as
                         Vendor
                       </a>
@@ -177,7 +177,7 @@ const Login = ({
                     
                     {!isRegister && (
                       <div className="mt-4 text-center">
-                        <a onClick={handleForgetPassword} href="#" className="text-muted">
+                        <a onClick={handleForgetPassword} href="" className="text-muted">
                           <i className="mdi mdi-lock mr-1"></i> Forgot your
                           password?
                         </a>

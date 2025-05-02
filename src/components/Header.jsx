@@ -6,7 +6,7 @@ const Header = ({user, handleLogout}) => {
         <div className="navbar-header">
           <div className="d-flex logo-box">
             <div className="navbar-brand-box">
-              <a href="index.html" className="logo">
+              <a href="" className="logo">
                 <span className="logo-sm">
                   <img
                     src="/assets/images/velocity_logo.png"
@@ -26,7 +26,7 @@ const Header = ({user, handleLogout}) => {
                 Welcome {user.name || "Henry"}
               </span>
               &nbsp;&nbsp;
-              <a onClick={handleLogout} href="#">
+              <a onClick={handleLogout} href="">
                 Logout
               </a>
             </div>
