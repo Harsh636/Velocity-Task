@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 
-const RfpQuotes = ({ quotes }) => {
+const RfpQuotes = ({ rfpData }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const totalItems = quotes.length;
-  
+  const totalItems = rfpData.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = quotes.slice(startIndex, startIndex + itemsPerPage);
-  
+  const currentItems = rfpData.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
   return (
     <>
@@ -42,10 +49,7 @@ const RfpQuotes = ({ quotes }) => {
               </div>
 
               <div className="table-responsive">
-                <table
-                  className="table mb-0 listingData dt-responsive"
-                  id="datatable"
-                >
+                <table className="table mb-0 listingData dt-responsive" id="datatable">
                   <thead>
                     <tr>
                       <th>Sr. No.</th>
@@ -61,14 +65,13 @@ const RfpQuotes = ({ quotes }) => {
                     {currentItems.length > 0 ? (
                       currentItems.map((rfp, index) => (
                         <tr key={index}>
-                          {" "}
-                          {/* Assuming each RFP has a unique id */}
-                          <th scope="row">{rfp.rfpNo}</th>
-                          <td>{rfp.rfpTitle}</td>
-                          <td>{rfp.rfpLastDate}</td>
-                          <td>{rfp.minAmount}</td>
-                          <td>{rfp.maxAmount}</td>
-                          <td>{rfp.amount}</td>
+                          <th scope="row">{startIndex + index + 1}</th>
+                          <td>{rfp.rfp_no}</td>
+                          <td>{rfp.item_name}</td>
+                          <td>{rfp.vendor_id}</td>
+                          <td>{rfp.minimum_price}</td>
+                          <td>{rfp.quantity}</td>
+                          <td>{rfp.minimum_price * rfp.quantity}</td>
                         </tr>
                       ))
                     ) : (
@@ -82,66 +85,54 @@ const RfpQuotes = ({ quotes }) => {
                 </table>
               </div>
 
-              <div className="row pt-3">
-                <div className="col-sm-12 col-md-5">
-                  <div
-                    className="dataTables_info"
-                    id="datatable_info"
-                    role="status"
-                    aria-live="polite"
-                  >
-                    Showing 1 to 5 of {totalItems} entries
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="row pt-3">
+                  <div className="col-sm-6">
+                    <div className="dataTables_info">
+                      Showing {startIndex + 1} to{" "}
+                      {Math.min(startIndex + itemsPerPage, totalItems)} of {totalItems} entries
+                    </div>
                   </div>
-                </div>
-                <div className="col-sm-12 col-md-7 dataTables_wrapper">
-                  <div
-                    className="dataTables_paginate paging_simple_numbers"
-                    id="datatable_paginate"
-                  >
-                    <ul className="pagination">
-                      <li
-                        className="paginate_button page-item previous disabled"
-                        id="datatable_previous"
-                      >
-                        <a
-                          href="#"
-                          aria-controls="datatable"
-                          data-dt-idx="0"
-                          tabIndex="0"
-                          className="page-link"
-                        >
+                  <div className="col-sm-6 text-right">
+                    <ul className="pagination justify-content-end mb-0">
+                      <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                        <button className="page-link" onClick={handlePrevious}>
                           Previous
-                        </a>
+                        </button>
                       </li>
-                      <li className="paginate_button page-item active">
-                        <a
-                          href="#"
-                          aria-controls="datatable"
-                          data-dt-idx="1"
-                          tabIndex="0"
-                          className="page-link"
-                        >
-                          1
-                        </a>
-                      </li>
-                      <li
-                        className="paginate_button page-item next disabled"
-                        id="datatable_next"
-                      >
-                        <a
-                          href="#"
-                          aria-controls="datatable"
-                          data-dt-idx="2"
-                          tabIndex="0"
-                          className="page-link"
-                        >
+
+                      {(() => {
+                        const pageNumbers = [];
+                        let startPage = Math.max(1, currentPage - 2);
+                        let endPage = Math.min(totalPages, startPage + 4);
+
+                        if (endPage - startPage < 4) {
+                          startPage = Math.max(1, endPage - 4);
+                        }
+
+                        for (let i = startPage; i <= endPage; i++) {
+                          pageNumbers.push(
+                            <li key={i} className={`page-item ${currentPage === i ? "active" : ""}`}>
+                              <button className="page-link" onClick={() => setCurrentPage(i)}>
+                                {i}
+                              </button>
+                            </li>
+                          );
+                        }
+
+                        return pageNumbers;
+                      })()}
+
+                      <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                        <button className="page-link" onClick={handleNext}>
                           Next
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

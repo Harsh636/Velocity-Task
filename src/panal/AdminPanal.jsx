@@ -27,17 +27,7 @@ const AdminPanal = () => {
 
     const fetchData = async () => {
       try {
-        // Fetch categories
-        // const categoriesResponse = await fetch("https://rfpdemo.velsof.com/api/categories");
-        // const categoriesResult = await categoriesResponse.json();
-        // if (categoriesResult.response === "success" && categoriesResult.categories) {
-          
-        //   const categoriesArray = Object.values(categoriesResult.categories);
-        //   setAllCategory(categoriesArray);
-        // }
-        // else{
-        //   console.log(categoriesResult.error);
-        // }
+       
 
         // Fetch RFP data
         const rfpResponse = await fetch(`https://rfpdemo.velsof.com/api/rfp/getrfp/${user.user_id}`, {
@@ -48,7 +38,9 @@ const AdminPanal = () => {
           },
         });
         const rfpDataResult = await rfpResponse.json();
+        
         if (rfpResponse.ok && rfpDataResult.response === "success") {
+          console.log(rfpDataResult)
           setRfpData(rfpDataResult.rfps || []);
         } else{
           console.log(rfpDataResult.error);
@@ -65,25 +57,14 @@ const AdminPanal = () => {
         const vendorsResult = await vendorsResponse.json();
         
         if (vendorsResponse.ok && vendorsResult.response === "success") {
+          console.log(vendorsResult)
           setVendors(vendorsResult.vendors || []);
         } else{
           console.log(vendorsResult.error);
         }
 
-        // Fetch quotes
-        const quotesResponse = await fetch(`https://rfpdemo.velsof.com/api/rfp/quotes/${user.user_id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const quotesResult = await quotesResponse.json();
-        if (quotesResponse.ok && quotesResult.response === "success") {
-          setQuotes(quotesResult.quotes || []);
-        } else{
-          console.log(quotesResult.error);
-        }
+        
+        
       } catch (error) {
         console.error("API call error:", error);
       }
@@ -184,7 +165,7 @@ const AdminPanal = () => {
             ) : activeView === "vendors" ? (
               <VendorList vendors={vendors} />
             ) : activeView === "quotes" ? (
-              <RfpQuotes quotes={quote} />
+              <RfpQuotes rfpData={rfpData} />
             ) : null}
           </div>
         </div>

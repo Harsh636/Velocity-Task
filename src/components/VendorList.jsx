@@ -7,21 +7,21 @@ const VendorList = ({ vendors }) => {
   const handleApprove = async (vendorId) => {
     
     try {
-      const response = await fetch("https://rfpdemo.velsof.com/api/rfp/approveVendor", {
+      const response = await fetch("https://rfpdemo.velsof.com/api/rfp/approvVendor", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`, // Make sure user.token exists and is correct
+          Authorization: `Bearer ${user.token}`, 
         },
         body: JSON.stringify({
-          user_id: vendorId,
+          user_id: parseInt(vendorId),
           status: "approved",
         }),
       });
   
       const result = await response.json();
       
-  
+      console.log(result);
       if (response.ok && result.response === "success") {
         alert("Vendor approved successfully.");
       } else {
