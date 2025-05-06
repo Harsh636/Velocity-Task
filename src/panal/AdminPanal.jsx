@@ -9,13 +9,16 @@ import Footer from "../components/Footer";
 import { UserContext } from "../Context/Context";
 import CreateRFP from "../components/CreateRfp";
 
+
 const AdminPanal = () => {
-  const { logout, user, category } = useContext(UserContext);
+  const { logout, user, category , rfpData, approveVendor, setApproveVendor} = useContext(UserContext);
   const [activeView, setActiveView] = useState("dashboard");
   // const [allCategory, setAllCategory] = useState([]);
+  console.log(rfpData);
   const [vendors, setVendors] = useState([]);
-  const [rfpData, setRfpData] = useState([]);
-  const [quote, setQuotes] = useState([]);
+  
+  const [loadingVender, setLoadingVendor] = useState(false);
+  
   const [addRfp, setAddRfp] = useState(false);
 
   // Fetch all data on component mount if user is available
@@ -27,24 +30,6 @@ const AdminPanal = () => {
 
     const fetchData = async () => {
       try {
-       
-
-        // Fetch RFP data
-        const rfpResponse = await fetch(`https://rfpdemo.velsof.com/api/rfp/getrfp/${user.user_id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const rfpDataResult = await rfpResponse.json();
-        
-        if (rfpResponse.ok && rfpDataResult.response === "success") {
-          console.log(rfpDataResult)
-          setRfpData(rfpDataResult.rfps || []);
-        } else{
-          console.log(rfpDataResult.error);
-        }
 
         // Fetch vendors
         const vendorsResponse = await fetch("https://rfpdemo.velsof.com/api/vendorlist", {
@@ -57,6 +42,7 @@ const AdminPanal = () => {
         const vendorsResult = await vendorsResponse.json();
         
         if (vendorsResponse.ok && vendorsResult.response === "success") {
+          setLoadingVendor(false);
           console.log(vendorsResult)
           setVendors(vendorsResult.vendors || []);
         } else{
@@ -71,7 +57,7 @@ const AdminPanal = () => {
     };
 
     fetchData();
-  }, [user]);
+  }, [user, approveVendor]);
 
   const handleLogout = () => {
     logout();
@@ -88,7 +74,9 @@ const AdminPanal = () => {
 
   return (
     <div id="layout-wrapper">
+      
       <Header user={user} handleLogout={handleLogout} />
+      
       <div className="vertical-menu">
         <div data-simplebar className="h-100">
           <div id="sidebar-menu">
@@ -162,8 +150,7 @@ const AdminPanal = () => {
               <Category/>
             ) : activeView === "rfp" ? (
               <Rfp rfpData={rfpData} handleRfp={handleRfp} />
-            ) : activeView === "vendors" ? (
-              <VendorList vendors={vendors} />
+            ) : activeView === "vendors" ? (!loadingVender?<VendorList vendors={vendors} setApproveVendor={setApproveVendor} approveVendor={approveVendor} loadingVender={loadingVender} setLoadingVendor={setLoadingVendor}/>:<h4>Updating Vendor... </h4>
             ) : activeView === "quotes" ? (
               <RfpQuotes rfpData={rfpData} />
             ) : null}

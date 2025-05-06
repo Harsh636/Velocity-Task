@@ -3,6 +3,7 @@ import React from 'react'
 const Header = ({user, handleLogout}) => {
   return (
     <header id="page-topbar">
+      
         <div className="navbar-header">
           <div className="d-flex logo-box">
             <div className="navbar-brand-box">
@@ -20,6 +21,7 @@ const Header = ({user, handleLogout}) => {
               </a>
             </div>
           </div>
+          
           <div className="d-flex pr-2">
             <div className="dropdown d-inline-block">
               <span className="d-none d-xl-inline-block ml-1">

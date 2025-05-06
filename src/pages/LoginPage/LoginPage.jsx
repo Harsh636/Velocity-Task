@@ -54,7 +54,7 @@ const LoginPage = ({isRegister, setIsRegister}) => {
         const data = await response.json();
 
         if (response.ok && data.response === "success") {
-          console.log("Registration successful!")
+          alert("Registration successful!");
           setIsRegister(false); // Switch to login form
           setFormData({
             firstName: "",
@@ -107,7 +107,7 @@ const LoginPage = ({isRegister, setIsRegister}) => {
             confirmPassword: "",
             mobile: "",
           });
-          navigate("/admin");
+          navigate(`/${data.type}`);
         } else {
           alert(data?.error || data?.message || "Login failed.");
         }

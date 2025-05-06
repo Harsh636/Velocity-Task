@@ -18,6 +18,7 @@ import VendorRegister from "./components/VendorRegister";
 
 import { UserContext } from "./Context/Context";
 import AdminPanal from "./panal/AdminPanal";
+import VendorPanal from "./panal/VendorPanal";
 
 function App() {
   const [isRegister, setIsRegister] = useState(false);
@@ -30,10 +31,23 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Redirect to respective panel based on user type */}
         <Route
           path="/"
-          element={!user ? <Navigate to="/login" /> : <Navigate to="/admin" />}
+          element={
+            !user ? (
+              <Navigate to="/login" />
+            ) : user.type === "admin" ? (
+              <Navigate to="/admin" />
+            ) : user.type === "vendor" ? (
+              <Navigate to="/vendor" />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
+
+        {/* Login & Register Pages */}
         <Route
           path="/login"
           element={
@@ -51,9 +65,27 @@ function App() {
           path="/vendor-registration"
           element={<VendorRegister setIsRegister={setIsRegister} />}
         />
+
+        {/* Protected Routes */}
         <Route
           path="/admin"
-          element={user ? <AdminPanal /> : <Navigate to="/login" />}
+          element={
+            user && user.type === "admin" ? (
+              <AdminPanal />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/vendor"
+          element={
+            user && user.type === "vendor" ? (
+              <VendorPanal />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
       </Routes>
     </Router>

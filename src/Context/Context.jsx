@@ -6,7 +6,39 @@ export const UserContext = createContext(null);
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [category, setCategory] = useState(null);
+  const [category, setCategory] = useState("");
+  const [rfpData, setRfpData] = useState([]);
+  const [approveVendor, setApproveVendor] = useState(false);
+
+
+  useEffect(()=>{
+    if(user){
+      const fetchData = async ()=>{
+        try{
+           // Fetch RFP data
+        const rfpResponse = await fetch(`https://rfpdemo.velsof.com/api/rfp/getrfp/${user.user_id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const rfpDataResult = await rfpResponse.json();
+        
+        if (rfpResponse.ok && rfpDataResult.response === "success") {
+          
+          setRfpData(rfpDataResult.rfps || []);
+        } else{
+          console.log(rfpDataResult.error);
+        }
+        } catch(error){
+          console.error("Fetch Error:", error);
+        }
+      }
+      fetchData();
+    }
+    
+  },[user, approveVendor])
 
   // On mount, load user and fetch categories
   useEffect(() => {
@@ -17,6 +49,7 @@ const UserProvider = ({ children }) => {
 
     const fetchData = async () => {
       try {
+        // category api
         const categoriesResponse = await fetch("https://rfpdemo.velsof.com/api/categories");
         const categoriesResult = await categoriesResponse.json();
 
@@ -36,6 +69,7 @@ const UserProvider = ({ children }) => {
     fetchData(); 
   }, []);
 
+
   const login = (userData) => {
     setUser(userData);
     sessionStorage.setItem("user", JSON.stringify(userData));
@@ -53,6 +87,10 @@ const UserProvider = ({ children }) => {
     loading,
     category,
     setCategory,
+    rfpData,
+    setRfpData,
+    approveVendor,
+    setApproveVendor,
   };
 
   return (

@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import { UserContext } from "../Context/Context";
 
-const VendorList = ({ vendors }) => {
+const VendorList = ({ vendors, setApproveVendor, approveVendor , setLoadingVendor}) => {
   const { user } = useContext(UserContext);
   
   const handleApprove = async (vendorId) => {
-    
+    setLoadingVendor(true)
+    console.log(vendorId);
     try {
-      const response = await fetch("https://rfpdemo.velsof.com/api/rfp/approvVendor", {
-        method: "PUT",
+      const response = await fetch("https://rfpdemo.velsof.com/api/approveVendor", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`, 
@@ -23,6 +24,8 @@ const VendorList = ({ vendors }) => {
       
       console.log(result);
       if (response.ok && result.response === "success") {
+        setApproveVendor(!approveVendor);
+        
         alert("Vendor approved successfully.");
       } else {
         alert(result.errors || "Failed to approve vendor.");
@@ -102,7 +105,7 @@ const VendorList = ({ vendors }) => {
                             </span>
                           </td>
                           <td>
-                            {vendor.status === "Rejected" && (
+                            {(vendor.status === "Rejected" || vendor.status === "Pending") && (
                               <span
                                 style={{ color: "green", cursor: "pointer" }}
                                 onClick={() => handleApprove(vendor.user_id)}

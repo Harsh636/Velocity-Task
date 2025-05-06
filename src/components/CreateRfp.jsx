@@ -1,19 +1,21 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../Context/Context";
-
-const RFPForm = ({ vendors = [], categories = [], setAddRfp }) => {
-  const { user } = useContext(UserContext);
+import "./CreateRfp.css";
+const RFPForm = ({ vendors = [], setAddRfp }) => {
+  const { user, category } = useContext(UserContext);
   const fallbackCategories = ["Electronics", "Office Supplies", "Furniture"];
   const categoryOptions =
-    categories.length > 0
-      ? categories
+    category.length > 0
+      ? category
       : fallbackCategories.map((name, index) => ({
           id: index.toString(),
           name,
         }));
 
   const [step, setStep] = useState(1); // Step 1: Select Category, Step 2: RFP Form
-
+  const [showPopUp, setShowPopUp] = useState("");
+  const [fadeOut, setFadeOut] = useState(false);
+  const[gotError, setGotError]= useState("");
   const [rfpData, setRfpData] = useState({
     itemName: "",
     itemDescription: "",
@@ -22,10 +24,20 @@ const RFPForm = ({ vendors = [], categories = [], setAddRfp }) => {
     minPrice: "",
     maxPrice: "",
     vendors: [],
-    category: "", 
-    categoryId: "", 
+    category: "",
+    categoryId: "",
     rfpNo: "",
   });
+
+  const handleShowPopUp = (msg) => {
+    setShowPopUp(msg);
+    setTimeout(() => setFadeOut(true), 1000);
+    setTimeout(() => {
+      setShowPopUp("");
+      setFadeOut(false);
+      setGotError("");
+    }, 2000);
+  };
 
   const handleCategorySubmit = (e) => {
     e.preventDefault();
@@ -119,177 +131,199 @@ const RFPForm = ({ vendors = [], categories = [], setAddRfp }) => {
       console.log("RFP API Result:", result);
 
       if (response.ok && result.response === "success") {
-        alert("RFP created successfully.");
-        setAddRfp(false);
+        // popup logic here
+        handleShowPopUp("success");
+
+        setTimeout(() => {
+          setAddRfp(false);
+        }, 2000);
       } else {
-        alert(result?.error || "Failed to create RFP.");
+        handleShowPopUp("failed");
+       
+        setGotError(result.errors);
       }
     } catch (err) {
       console.error("Error:", err);
       alert("An error occurred while submitting the RFP.");
     }
   };
-
+  console.log(gotError);
   const handleCancel = () => {
     setAddRfp(false);
   };
 
   return (
-    <div className="card">
-      <div className="card-body">
-        {step === 1 && (
-          <>
-            <h4 className="card-title mb-4">Select Category</h4>
-            <form onSubmit={handleCategorySubmit}>
-              <div className="form-group">
-                <label>
-                  Categories <span className="text-danger">*</span>
-                </label>
-                <select
-                  className="form-control"
-                  value={rfpData.categoryId}
-                  onChange={handleCategoryChange}
-                  required
-                >
-                  <option value="">-- Select a category --</option>
-                  {categoryOptions.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="mt-4">
-                <button type="submit" className="btn btn-primary mr-2">
-                  Next
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </>
-        )}
+    <>
+      {showPopUp !== "" && (
+        <div className="popup-container ">
+          <div
+            style={{
+              backgroundColor: showPopUp === "success" ? "#D4EDDA" : "#F8D7DA",
+              color: showPopUp === "success" ? "#155724" : "#721C24",
+            }}
+            className={`popup-content  ${fadeOut ? "fade-out" : ""}`}
+          >
+            <p>{gotError===""?`RFP ${rfpData.rfpNo} Added Successfully!`: gotError}</p>
+          </div>
+        </div>
+      )}
 
-        {step === 2 && (
-          <>
-            <h4 className="card-title mb-4">Create RFP</h4>
-            <form onSubmit={handleRfpSubmit}>
-              <div className="row">
-                <div className="col-md-4 form-group">
-                  <label>Item Name *</label>
-                  <input
-                    type="text"
-                    name="itemName"
-                    className="form-control"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="col-md-4 form-group">
-                  <label>Item Description *</label>
-                  <input
-                    type="text"
-                    name="itemDescription"
-                    className="form-control"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="col-md-4 form-group">
-                  <label>RFP No *</label>
-                  <input
-                    type="text"
-                    name="rfpNo"
-                    className="form-control"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="col-md-4 form-group">
-                  <label>Quantity *</label>
-                  <input
-                    type="number"
-                    name="quantity"
-                    className="form-control"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="col-md-4 form-group">
-                  <label>Last Date *</label>
-                  <input
-                    type="date"
-                    name="lastDate"
-                    className="form-control"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="col-md-4 form-group">
-                  <label>Minimum Price *</label>
-                  <input
-                    type="number"
-                    name="minPrice"
-                    className="form-control"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="col-md-4 form-group">
-                  <label>Maximum Price *</label>
-                  <input
-                    type="number"
-                    name="maxPrice"
-                    className="form-control"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="col-md-4 form-group">
-                  <label>Vendors *</label>
+      <div className="card">
+        <div className="card-body">
+          {step === 1 && (
+            <>
+              <h4 className="card-title mb-4">Select Category</h4>
+              <form onSubmit={handleCategorySubmit}>
+                <div className="form-group">
+                  <label>
+                    Categories <span className="text-danger">*</span>
+                  </label>
                   <select
-                    multiple
                     className="form-control"
-                    onChange={handleVendorChange}
+                    value={rfpData.categoryId}
+                    onChange={handleCategoryChange}
                     required
                   >
-                    {vendors
-                      .filter(
-                        (vendor) =>
-                          String(vendor.categories) ===
-                          String(rfpData.categoryId)
-                      )
-                      .map((vendor) => (
-                        <option key={vendor.user_id} value={vendor.user_id}>
-                          {vendor.name}
-                        </option>
-                      ))}
+                    <option value="">-- Select a category --</option>
+                    {categoryOptions.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
-              </div>
+                <div className="mt-4">
+                  <button type="submit" className="btn btn-primary mr-2">
+                    Next
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </>
+          )}
 
-              <div className="mt-4">
-                <button type="submit" className="btn btn-primary mr-2">
-                  Submit
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </>
-        )}
+          {step === 2 && (
+            <>
+              <h4 className="card-title mb-4">Create RFP</h4>
+              <form onSubmit={handleRfpSubmit}>
+                <div className="row">
+                  <div className="col-md-4 form-group">
+                    <label>Item Name *</label>
+                    <input
+                      type="text"
+                      name="itemName"
+                      className="form-control"
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="col-md-4 form-group">
+                    <label>Item Description *</label>
+                    <input
+                      type="text"
+                      name="itemDescription"
+                      className="form-control"
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="col-md-4 form-group">
+                    <label>RFP No *</label>
+                    <input
+                      type="text"
+                      name="rfpNo"
+                      className="form-control"
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="col-md-4 form-group">
+                    <label>Quantity *</label>
+                    <input
+                      type="number"
+                      name="quantity"
+                      className="form-control"
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="col-md-4 form-group">
+                    <label>Last Date *</label>
+                    <input
+                      type="date"
+                      name="lastDate"
+                      className="form-control"
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="col-md-4 form-group">
+                    <label>Minimum Price *</label>
+                    <input
+                      type="number"
+                      name="minPrice"
+                      className="form-control"
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="col-md-4 form-group">
+                    <label>Maximum Price *</label>
+                    <input
+                      type="number"
+                      name="maxPrice"
+                      className="form-control"
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="col-md-4 form-group">
+                    <label>Vendors *</label>
+                    <select
+                      multiple
+                      className="form-control"
+                      onChange={handleVendorChange}
+                      required
+                    >
+                      {vendors
+                        .filter(
+                          (vendor) =>
+                            String(vendor.categories) ===
+                            String(rfpData.categoryId)
+                        )
+                        .map((vendor) => (
+                          <option key={vendor.user_id} value={vendor.user_id}>
+                            {vendor.name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <button type="submit" className="btn btn-primary mr-2">
+                    Submit
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

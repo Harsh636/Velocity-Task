@@ -72,10 +72,13 @@ const VendorRegister = ({ setIsRegister }) => {
 
       if (response.ok) {
         setIsRegister(false);
-        navigate("/login");
+        
         if (data?.response === "success") {
+          navigate("/login");
+          alert("Vendor registered Successfully!")
           console.log('Vendor registered successfully!', data);
         } else {
+          alert(data.error);
           console.log(data.error);
         }
       } else {
